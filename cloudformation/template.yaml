@@ -1,0 +1,54 @@
+#STACKNAME: ci-dotnet-app-stack
+#VERSION: 0.0.7
+
+AWSTemplateFormatVersion: "2010-09-09"
+
+Parameters:
+  clusterName:
+    Description: Name of the cluster
+    Type: String
+    Default: ci-dotnet-app-cluster
+    AllowedPattern: ^[a-z][a-z0-9\-]*$
+
+  ### Tags version v1_1 ###
+  ciapplication:
+    Description: CodeImpacts Application 'Name'
+    Type: String
+    Default: Hotel and Travel Infra
+  ciappid:
+    Description: CodeImpacts Application 'AppID'
+    Type: String
+    Default: "CI355-98"
+  ciprojectcode:
+    Description: Project Code for Application
+    Type: String
+    Default: "CI355"
+  cienvironment:
+    Type: String
+    Default: "Development"
+    AllowedValues: ["Training", "Development", "QA", "Test", "Staging", "Production", "Disaster Recovery"]
+
+Resources:
+  CI2EcsCluster:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL:
+        !Join [
+          "/",
+          [
+            Fn::ImportValue: TemplatesS3BucketURL,
+            "library-system-templates/service-group/lambda/v1_1/ecs-cluster.template",
+          ],
+        ]
+      Parameters:
+        ClusterName: !Ref clusterName
+
+Outputs:
+  CI2EcsClusterArn:
+    Value: !GetAtt "CI2EcsCluster.Outputs.EcsClusterArn"
+    Export:
+      Name: CI2DEVEcsClusterArn
+  CI2EcsClusterName:
+    Value: !GetAtt "CI2EcsCluster.Outputs.EcsClusterName"
+    Export:
+      Name: CI2DEVEcsClusterName
