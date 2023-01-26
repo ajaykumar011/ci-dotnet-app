@@ -1,0 +1,59 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "DotNet.Docker/1.0.0": {
+        "dependencies": {
+          "AWSSDK.S3": "3.7.101.61"
+        },
+        "runtime": {
+          "DotNet.Docker.dll": {}
+        }
+      },
+      "AWSSDK.Core/3.7.103.23": {
+        "runtime": {
+          "lib/netcoreapp3.1/AWSSDK.Core.dll": {
+            "assemblyVersion": "3.3.0.0",
+            "fileVersion": "3.7.103.23"
+          }
+        }
+      },
+      "AWSSDK.S3/3.7.101.61": {
+        "dependencies": {
+          "AWSSDK.Core": "3.7.103.23"
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/AWSSDK.S3.dll": {
+            "assemblyVersion": "3.3.0.0",
+            "fileVersion": "3.7.101.61"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "DotNet.Docker/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "AWSSDK.Core/3.7.103.23": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-9If6PxkxBk+qB6fXtKOkf0L6myUS2w3rk7Ef6RX4nRZKpr2ueRFWT/OJlW91rvGwtmq6sfbywZlVI01ed+hNEQ==",
+      "path": "awssdk.core/3.7.103.23",
+      "hashPath": "awssdk.core.3.7.103.23.nupkg.sha512"
+    },
+    "AWSSDK.S3/3.7.101.61": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-znOQTv81Khe3mBxwzmhk5NcJeiTPHcY/qNMPOXDUJLnZjvN985LDivNhrNTQG85iEvAzwhlsQOEYAF5IqKLSQA==",
+      "path": "awssdk.s3/3.7.101.61",
+      "hashPath": "awssdk.s3.3.7.101.61.nupkg.sha512"
+    }
+  }
+}
