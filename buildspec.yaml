@@ -1,0 +1,46 @@
+version: 0.2
+phases:
+  install:
+    commands:
+      - echo Entered the install phase...
+    finally:
+      - echo This always runs even if the update or install command fails
+  build:
+    commands:
+      - echo "Region = ${AWS_REGION} and Account Id = $(echo $CODEBUILD_BUILD_ARN | cut -f5 -d ':')"
+      - echo "Repo Name = $(echo $CODEBUILD_SOURCE_VERSION | cut -f2 -d '/') and Commit Id = ${CODEBUILD_RESOLVED_SOURCE_VERSION}"
+      - echo "Build Number = ${CODEBUILD_BUILD_NUMBER}"
+      - stackline=$(head -n 1 cloudformation/template.yaml)
+      - STACK_NAME=`echo $stackline | awk '{if(/#STACK:/) print $2}'`
+      - aws cloudformation describe-stacks --stack-name $STACK_NAME && STACK_TYPE=UPDATE || STACK_TYPE=CREATE
+      - echo Stack Name $STACK_NAME
+      - echo Stack Type $STACK_TYPE
+      - myid=`aws cloudformation create-change-set --change-set-name ${STACK_NAME}-change --stack-name ${STACK_NAME} --template-body file://cloudformation/template.yaml --role-arn ${CF_ROLE_ARN} --capabilities CAPABILITY_NAMED_IAM --change-set-type ${STACK_TYPE} --output text --query Id`
+        # wait for your change-set to finish execution
+      - aws cloudformation wait change-set-create-complete --change-set-name $myid 2> /dev/null
+      - result_status=`aws cloudformation describe-change-set --change-set-name $myid --output text --query Status`
+      # only executes the change-set if there were changes, aka Status is complete (if no changes, this will be FAILED)
+      - |
+        if [ "$result_status" = "CREATE_COMPLETE" ] ; then
+          aws cloudformation execute-change-set --change-set-name $myid
+        fi
+
+      - |
+        if [ "$STACK_TYPE" = "CREATE" ] ; then
+          aws cloudformation wait stack-create-complete --stack-name $STACK_NAME
+        else
+          aws cloudformation wait stack-update-complete --stack-name $STACK_NAME
+        fi
+      - aws cloudformation describe-stack-events --stack-name $STACK_NAME --max-items 2
+    finally:
+      - echo Execution is completed adn you can see the above status of sucess or failure
+  post_build:
+    commands:
+      - echo Entered the post_build phase...
+      - echo Build completed on `date`
+artifacts:
+  files:
+    - '**/*'
+  name: builds/$CODEBUILD_BUILD_NUMBER/my-artifacts
+  base-directory: 'cloudformation*'
+  discard-paths: yes
