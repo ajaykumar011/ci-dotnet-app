@@ -4,32 +4,29 @@
 AWSTemplateFormatVersion: "2010-09-09"
 
 Parameters:
-  clusterName:
-    Description: Name of the cluster
+  EcrRepoName:
+    Description: The name of the Ecr Repo
     Type: String
-    Default: ci-dotnet-app-cluster
-    AllowedPattern: ^[a-z][a-z0-9\-]*$
-
-  ### Tags version v1_1 ###
-  ciapplication:
-    Description: CodeImpacts Application 'Name'
+    Default: ci-dotnet-app
+  FullRepositoryId:
+    Description: The full repository Id
     Type: String
-    Default: Hotel and Travel Infra
-  ciappid:
-    Description: CodeImpacts Application 'AppID'
+    Default: ajaykumar011/ci-dotnet-app
+  BranchName:
+    Description: Branch Name
     Type: String
-    Default: "CI355-98"
-  ciprojectcode:
-    Description: Project Code for Application
+    Default: develop
+  Environment:
+    Description: Deploy Environment
     Type: String
-    Default: "CI355"
-  cienvironment:
+    Default: Development
+  PipelineName:
+    Description: Name of the Pipeline
     Type: String
-    Default: "Development"
-    AllowedValues: ["Training", "Development", "QA", "Test", "Staging", "Production", "Disaster Recovery"]
+    Default: ci-dotnet-app-pipeline
 
 Resources:
-  CI2EcsCluster:
+  CIEcrDeployPipeline:
     Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL:
@@ -37,18 +34,19 @@ Resources:
           "/",
           [
             Fn::ImportValue: TemplatesS3BucketURL,
-            "library-system-templates/service-group/lambda/v1_1/ecs-cluster.template",
+            "library-system-templates/application-family/content-fetcher/v1_1/ecr-ecs-deploy-pipeline.template",
           ],
         ]
       Parameters:
-        ClusterName: !Ref clusterName
+        EcrRepoName: !Ref EcrRepoName
+        FullRepositoryId: !Ref FullRepositoryId
+        BranchName: !Ref BranchName
+        Environment: !Ref Environment
+        PipelineName: !Ref PipelineName
 
 Outputs:
-  CI2EcsClusterArn:
-    Value: !GetAtt "CI2EcsCluster.Outputs.EcsClusterArn"
-    Export:
-      Name: CI2DEVEcsClusterArn
-  CI2EcsClusterName:
-    Value: !GetAtt "CI2EcsCluster.Outputs.EcsClusterName"
-    Export:
-      Name: CI2DEVEcsClusterName
+  CIEcsRepoArn:
+    Value: !GetAtt "CIEcrDeployPipeline.Outputs.EcrRepoArn"
+  CIEcrPipelineArn:
+    Value: !GetAtt "CIEcrDeployPipeline.Outputs.EcrPipelineArn"
+
