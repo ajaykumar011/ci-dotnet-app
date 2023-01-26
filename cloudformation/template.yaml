@@ -1,4 +1,4 @@
-#STACKNAME: ci-dotnet-app-stack
+#STACK: ci-dotnet-app-stack
 #VERSION: 0.0.8
 
 AWSTemplateFormatVersion: "2010-09-09"
