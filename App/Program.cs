@@ -39,7 +39,7 @@ namespace App
                 }
             }
 
-            var s3Client = new AmazonS3Client(credentials, RegionEndpoint.USEast1);
+            var s3Client = new AmazonS3Client(credentials, RegionEndpoint.APSouth1);
 
             var response = await s3Client.ListBucketsAsync();
             Console.WriteLine($"Found {response.Buckets.Count} buckets.");
