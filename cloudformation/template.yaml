@@ -71,6 +71,5 @@ Resources:
 Outputs:
   CIEcsRepoArn:
     Value: !GetAtt "CIEcrDeployPipeline.Outputs.EcrRepoArn"
-  CIEcrPipelineArn:
-    Value: !GetAtt "CIEcrDeployPipeline.Outputs.EcrPipelineArn"
+
 
