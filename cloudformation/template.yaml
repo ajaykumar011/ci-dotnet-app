@@ -67,7 +67,6 @@ Resources:
         ClusterName: !Ref ClusterName
         ContainerMemory: !Ref ContainerMemory
         ContainerCpu: !Ref ContainerCpu
-
 Outputs:
   CIEcsRepoArn:
     Value: !GetAtt "CIEcrDeployPipeline.Outputs.EcrRepoArn"
