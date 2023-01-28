@@ -1,13 +1,13 @@
 #STACK: ci-dotnet-app-stack
-#VERSION: 0.0.8
+#VERSION: 0.0.9
 
 AWSTemplateFormatVersion: "2010-09-09"
 
 Parameters:
-  EcrRepoName:
+  RepositoryName:
     Description: The name of the Ecr Repo
     Type: String
-    Default: ci-dotnet-app
+    Default: job-repo
   FullRepositoryId:
     Description: The full repository Id
     Type: String
@@ -20,10 +20,30 @@ Parameters:
     Description: Deploy Environment
     Type: String
     Default: Development
-  PipelineName:
-    Description: Name of the Pipeline
+  Prefix:
     Type: String
-    Default: ci-dotnet-app-pipeline
+    Description: The prefix to use for anything deployed with this deployer
+    Default: ci
+  AppName:
+    Type: String
+    Description: The prefix to use for anything deployed with this deployer
+    Default: dotnet-app
+  # ConnectionArn:
+  #   Description: Github Connection Arn
+  #   Type: String
+  #   Default: arn:aws:codestar-connections:ap-south-1:896746609106:connection/4a1d3e76-5345-4c82-9036-3b701b2a5dc6
+  ClusterName:
+    Description: ECS Container Memory
+    Type: String
+    Default: taskbased-job
+  ContainerMemory:
+    Description: ECS Container Memory
+    Type: String
+    Default: '512'
+  ContainerCpu:
+    Description: ECS Container CPU
+    Type: String
+    Default: '256'
 
 Resources:
   CIEcrDeployPipeline:
@@ -38,11 +58,15 @@ Resources:
           ],
         ]
       Parameters:
-        EcrRepoName: !Ref EcrRepoName
+        Prefix: !Ref Prefix
+        AppName: !Ref AppName
+        RepositoryName: !Ref RepositoryName
         FullRepositoryId: !Ref FullRepositoryId
         BranchName: !Ref BranchName
         Environment: !Ref Environment
-        PipelineName: !Ref PipelineName
+        ClusterName: !Ref ClusterName
+        ContainerMemory: !Ref ContainerMemory
+        ContainerCpu: !Ref ContainerCpu
 
 Outputs:
   CIEcsRepoArn:
