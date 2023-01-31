@@ -1,6 +1,3 @@
 [submodule "ci-jenkins-slave"]
 	path = ci-jenkins-slave
 	url = https://github.com/ajaykumar011/ci-jenkins-slave.git
-[submodule "sepia-scm"]
-	path = sepia-scm
-	url = https://github.com/ajaysepia/sepia-scm.git
