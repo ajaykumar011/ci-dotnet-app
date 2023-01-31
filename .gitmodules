@@ -1,0 +1,3 @@
+[submodule "ci-jenkins-slave"]
+	path = ci-jenkins-slave
+	url = https://github.com/ajaykumar011/ci-jenkins-slave.git
