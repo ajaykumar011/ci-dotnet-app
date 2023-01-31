@@ -3,4 +3,4 @@
 	url = https://github.com/ajaykumar011/ci-jenkins-slave.git
 [submodule "sepia-scm"]
 	path = sepia-scm
-	url = https://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@github.com/ajaysepia/sepia-scm.git
+	url = https://github.com/ajaysepia/sepia-scm.git
