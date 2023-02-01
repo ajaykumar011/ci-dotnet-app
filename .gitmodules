@@ -1,3 +1,6 @@
 [submodule "ci-jenkins-slave"]
 	path = ci-jenkins-slave
 	url = https://github.com/ajaykumar011/ci-jenkins-slave.git
+[submodule "lambda-automation-test"]
+	path = lambda-automation-test
+	url = https://ajaysepia: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@github.com/ajaysepia/lambda-automation-test.git
